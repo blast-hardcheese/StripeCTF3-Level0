@@ -1,24 +1,23 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env python
+import sys
+import re
 
 # Our test cases will always use the same dictionary file (with SHA1
 # 6b898d7c48630be05b72b3ae07c5be6617f90d8e). Running `test/harness`
 # will automatically download this dictionary for you if you don't
 # have it already.
 
-path = ARGV.length > 0 ? ARGV[0] : '/usr/share/dict/words'
-entries = File.read(path).split("\n")
+path = sys.argv[1] if len(sys.argv) >= 2 else '/usr/share/dict/words'
 
 words = {}
-for word in entries # I don't know Ruby, I would have done this idiomatically otherwise.
-    words[word] = word
-end
+for word in open(path).read().split("\n"):
+    words[word.lower()] = word
 
-contents = $stdin.read
-output = contents.gsub(/[^ \n]+/) do |word|
-  if words.has_key?(word)
-    word
-  else
-    "<#{word}>"
-  end
-end
-print output
+for line in sys.stdin.readlines():
+    output = []
+    for word in re.findall(r"[^ \n]+", line):
+        if word.lower() in words:
+            output.append(word)
+        else:
+            output.append("<" + word + ">")
+    print " ".join(output)
