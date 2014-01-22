@@ -8,9 +8,14 @@
 path = ARGV.length > 0 ? ARGV[0] : '/usr/share/dict/words'
 entries = File.read(path).split("\n")
 
+words = {}
+for word in entries # I don't know Ruby, I would have done this idiomatically otherwise.
+    words[word] = word
+end
+
 contents = $stdin.read
 output = contents.gsub(/[^ \n]+/) do |word|
-  if entries.include?(word.downcase)
+  if words.has_key?(word)
     word
   else
     "<#{word}>"
