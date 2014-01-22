@@ -11,7 +11,7 @@ path = sys.argv[1] if len(sys.argv) >= 2 else '/usr/share/dict/words'
 
 words = {}
 for word in open(path).read().split("\n"):
-    words[word.lower()] = word
+    words[word] = word
 
 for line in sys.stdin.readlines():
     output = []
